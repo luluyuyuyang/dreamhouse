@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DreamHouse — Join WeChat Group</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .back {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.2rem;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.85rem;
+      color: #888;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .back:hover { color: #333; }
+
+    h1 {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 0.4rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .qr-wrap {
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      display: inline-block;
+      background: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .qr-wrap img {
+      width: min(280px, 80vw);
+      height: min(280px, 80vw);
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .hint {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.82rem;
+      color: #bbb;
+    }
+
+    /* On mobile, add a direct open button */
+    .open-btn {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 12px 28px;
+      background: #07c160;
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .open-btn { display: inline-block; }
+      .hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="./index.html" class="back">← Back</a>
+
+  <h1>Join the DreamHouse WeChat Group</h1>
+  <p>Scan the QR code with WeChat to join our discussion group.<br>Share results, ask questions, stay updated.</p>
+
+  <div class="qr-wrap">
+    <img src="./assets/wechat_group_qr.jpeg" alt="WeChat group QR code"/>
+  </div>
+
+  <p class="hint">Open WeChat → Scan → Join group</p>
+
+  <!-- On phone: tapping this opens the image full-screen so they can scan -->
+  <a class="open-btn" href="./assets/wechat_group_qr.jpeg" target="_blank">
+    Open QR Code Full Screen
+  </a>
+
+</body>
+</html>

@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DreamHouse: How Far Are VLMs from Constructing the Real World?</title>
+
+  <!-- Exact Nerfies/VGGT font stack -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet"/>
+  <!-- Bulma -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <!-- Academicons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"/>
+
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      color: #363636;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Paper title: Castoro serif like Nerfies ── */
+    .paper-title {
+      font-family: 'Castoro', serif;
+      font-size: 2.4rem;
+      line-height: 1.28;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 1.4rem;
+    }
+    @media (max-width: 768px) { .paper-title { font-size: 1.65rem; } }
+    @media (max-width: 900px) {
+      .hero-three-col { grid-template-columns: 1fr !important; }
+      .hero-three-col .hero-img { display: none; }
+    }
+
+    .author-block { display: inline-block; margin-right: 0.25rem; }
+    .author-block a {
+      color: #3273dc;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 1.05rem;
+    }
+
+    .affil {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.9rem;
+      color: #888;
+      margin: 0.4rem 0 1.4rem;
+    }
+
+    /* ── Section spacing ── */
+    .section { padding: 3.5rem 1.5rem; }
+    hr.divider { border: none; border-top: 1px solid #ebebeb; margin: 0; }
+
+    /* ── Section headings: Google Sans ── */
+    .section-heading {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      text-align: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-sub {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 0.93rem;
+      color: #999;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 2.4rem;
+      line-height: 1.7;
+    }
+
+    /* ── Hero GIF ── */
+    .hero-gif-wrap {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.09);
+      line-height: 0;
+    }
+    .hero-gif-wrap img { width: 100%; display: block; }
+    .gif-caption {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 0.82rem;
+      color: #bbb;
+      text-align: center;
+      margin-top: 0.9rem;
+      line-height: 1.55;
+    }
+
+    /* ── Stat bar ── */
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      border: 1px solid #ebebeb;
+      border-radius: 10px;
+      overflow: hidden;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .stat-cell {
+      flex: 1 1 130px;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      border-right: 1px solid #ebebeb;
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Castoro', serif;
+      font-size: 2.1rem;
+      color: #3273dc;
+      display: block;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-lbl {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #bbb;
+      font-weight: 500;
+    }
+
+    /* ── Abstract ── */
+    .abstract-body {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.9;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ── Validation grid ── */
+    .val-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .val-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .val-grid { grid-template-columns: 1fr; } }
+
+    .val-card {
+      border: 1px solid #ebebeb;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: default;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .val-card:hover {
+      border-color: #c8d8f0;
+      box-shadow: 0 4px 16px rgba(50,115,220,0.1);
+    }
+
+    /* Paused by default, play on hover */
+    .val-card svg .anim { animation-play-state: paused; }
+    .val-card:hover svg .anim { animation-play-state: running; }
+
+    /* T1: load path - arrows flow down */
+    @keyframes flowDown { 0%{stroke-dashoffset:20} 100%{stroke-dashoffset:0} }
+    /* T2: span arrow pulses */
+    @keyframes spanPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+    /* T3: spacing highlight slides */
+    @keyframes spacingSlide { 0%{opacity:0;transform:translateX(-4px)} 60%{opacity:1;transform:translateX(0)} 100%{opacity:1} }
+    /* T4: dimension bracket grows */
+    @keyframes bracketGrow { 0%{transform:scaleX(0)} 100%{transform:scaleX(1)} }
+    /* T5: beam deflects down */
+    @keyframes deflect { 0%{d:path("M36,68 Q80,68 124,68")} 50%{d:path("M36,68 Q80,92 124,68")} 100%{d:path("M36,68 Q80,92 124,68")} }
+    /* T6: cells fill in */
+    @keyframes cellFill { 0%{opacity:0} 100%{opacity:0.2} }
+    /* T7: gap pulses red */
+    @keyframes gapPulse { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+    /* T8: supports slide up */
+    @keyframes supportRise { 0%{transform:translateY(8px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+    /* T9: check marks appear */
+    @keyframes checkAppear { 0%{opacity:0;transform:scale(0)} 60%{transform:scale(1.2)} 100%{opacity:1;transform:scale(1)} }
+    /* T10: zones highlight top then bottom */
+    @keyframes slideFromTop { 0%{opacity:0;transform:translateY(-8px)} 60%{opacity:1;transform:translateY(2px)} 100%{opacity:1;transform:translateY(0)} }
+    @keyframes slideFromBot { 0%{opacity:0;transform:translateY(8px)} 60%{opacity:1;transform:translateY(-2px)} 100%{opacity:1;transform:translateY(0)} }
+    .val-card-head {
+      padding: 10px 13px 8px;
+      border-bottom: 1px solid #f0f0f0;
+      flex-shrink: 0;
+    }
+    .val-cat {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.66rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #3273dc;
+      margin-bottom: 2px;
+    }
+    .val-name {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+    .val-img {
+      width: 100%;
+      background: #f0f5ff;
+      border-bottom: 1px solid #f0f0f0;
+      line-height: 0;
+      height: 140px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .val-img svg { display: block; width: 100%; height: 140px; }
+    .val-desc {
+      padding: 9px 13px;
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 0.77rem;
+      color: #999;
+      line-height: 1.55;
+      flex: 1;
+    }
+
+
+    /* ── Model showcase ── */
+    .model-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+    .model-tab {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 7px 22px;
+      border-radius: 24px;
+      border: 1.5px solid #dbdbdb;
+      background: none;
+      cursor: pointer;
+      color: #999;
+      transition: all 0.14s;
+    }
+    .model-tab.active, .model-tab:hover {
+      border-color: #3273dc;
+      color: #3273dc;
+      background: #f0f5ff;
+    }
+
+    .model-panel { display: none; }
+    .model-panel.active {
+      display: grid;
+      grid-template-columns: 55% 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .model-panel.active { grid-template-columns: 1fr; }
+    }
+
+    .model-vis {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #ebebeb;
+      background: #f5f5f5;
+      line-height: 0;
+    }
+    .model-vis img { width: 100%; display: block; }
+    .model-placeholder {
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #ccc;
+    }
+    .model-placeholder i { font-size: 2rem; }
+    .model-placeholder small {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.78rem;
+    }
+
+    .model-name {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+    }
+    .proto-chip {
+      display: inline-block;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: #f0f0f0;
+      color: #999;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .model-desc {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 0.88rem;
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 1.2rem;
+    }
+    .result-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .pill { border-radius: 20px; padding: 4px 13px; font-size: 0.75rem; font-family: 'Google Sans', sans-serif; font-weight: 500; }
+    .pill.pass { background: #e8f5e9; color: #2e7d32; }
+    .pill.fail { background: #fdecea; color: #c62828; }
+    .pill.warn { background: #fff8e1; color: #e65100; }
+
+    .wip-note {
+      text-align: center;
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 0.8rem;
+      color: #ccc;
+      margin-top: 2rem;
+    }
+
+    /* ── Results table ── */
+    .result-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      border: 1px solid #ebebeb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .result-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .result-wrap th {
+      background: #fafafa;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #bbb;
+      padding: 10px 16px;
+      border-bottom: 1px solid #ebebeb;
+      text-align: center;
+    }
+    .result-wrap th:first-child { text-align: left; }
+    .result-wrap td {
+      font-family: 'Noto Sans', sans-serif;
+      padding: 11px 16px;
+      border-bottom: 1px solid #f4f4f4;
+      text-align: center;
+      color: #363636;
+    }
+    .result-wrap td:first-child {
+      text-align: left;
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 500;
+    }
+    .result-wrap tr:last-child td { border-bottom: none; }
+    .result-wrap tr:hover td { background: #fafffe; }
+    .result-wrap td.best { color: #3273dc; font-weight: 600; }
+    .result-wrap td.worst { color: #c62828; }
+    .table-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #ccc;
+      font-family: 'Noto Sans', sans-serif;
+      margin-top: 0.75rem;
+    }
+
+    /* ── BibTeX ── */
+    .bibtex {
+      background: #fafafa;
+      border: 1px solid #ebebeb;
+      border-radius: 8px;
+      padding: 1.4rem 1.8rem;
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      font-size: 0.8rem;
+      line-height: 1.85;
+      color: #777;
+      white-space: pre;
+      overflow-x: auto;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: #fafafa;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid #ebebeb;
+      text-align: center;
+    }
+    footer p {
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 0.8rem;
+      color: #bbb;
+      line-height: 1.8;
+    }
+    footer a { color: #3273dc; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section class="hero">
+  <div class="hero-body" style="padding: 3.5rem 1.5rem 1.5rem;">
+    <div style="max-width:1300px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:5rem;">
+
+      <!-- Left image: completed house -->
+      <div style="text-align:right;">
+        <img src="./assets/house_completed.png" alt="Completed house render"
+             style="max-height:300px; width:auto; max-width:100%; border-radius:8px; display:inline-block;"/>
+      </div>
+
+      <!-- Center: title + authors + buttons -->
+      <div style="text-align:center; min-width:420px; max-width:580px;">
+        <h1 class="paper-title" style="font-size:2.6rem; line-height:1.25;">
+          DreamHouse: How Far Are VLMs from Constructing the Real World?
+        </h1>
+        <div style="margin-bottom:0.5rem; line-height:2.2;">
+          <span class="author-block">Luyu Yang,</span>
+          <span class="author-block">Yutong Dai,</span>
+          <span class="author-block">An Yan,</span>
+          <span class="author-block">Viraj Prabhu,</span>
+          <span class="author-block">Ran Xu,</span>
+          <span class="author-block">Zeyuan Chen</span>
+        </div>
+        <p class="affil" style="font-size:1.05rem; color:#444; font-weight:500;">Salesforce AI Research</p>
+        <div class="buttons is-centered" style="gap:10px; flex-wrap:nowrap; align-items:center; justify-content:center;">
+          <a class="button is-rounded is-light" disabled style="cursor:default; opacity:0.55;">
+            <span class="icon"><i class="ai ai-arxiv"></i></span>
+            <span>arXiv</span>
+          </a>
+          <a class="button is-rounded is-light" disabled style="cursor:default; opacity:0.55;">
+            <span class="icon"><i class="fab fa-github"></i></span>
+            <span>Code</span>
+          </a>
+          <a class="button is-rounded is-light" disabled style="cursor:default; opacity:0.55;">
+            <span class="icon"><i class="fas fa-play"></i></span>
+            <span>Demo</span>
+          </a>
+          <div style="position:relative; display:inline-block;">
+            <a class="button is-rounded is-dark" href="https://discord.gg/f3yebJFx" target="_blank"
+              onmouseenter="document.getElementById('discord-tip').style.display='block'"
+              onmouseleave="document.getElementById('discord-tip').style.display='none'">
+              <span class="icon"><i class="fab fa-discord"></i></span>
+              <span>Discord</span>
+            </a>
+            <div id="discord-tip" style="display:none; position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); background:#1a1a1a; color:#fff; border-radius:8px; padding:8px 14px; font-family:'Noto Sans',sans-serif; font-size:0.78rem; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:100; line-height:1.5;">
+              Go to Discord
+              <div style="position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); width:10px; height:10px; background:#1a1a1a; clip-path:polygon(0 0,100% 0,50% 100%);"></div>
+            </div>
+          </div>
+          <div style="position:relative; display:inline-block;">
+            <a class="button is-rounded is-dark" href="./wechat.html" target="_blank"
+              onmouseenter="document.getElementById('wechat-tip').style.display='block'"
+              onmouseleave="document.getElementById('wechat-tip').style.display='none'">
+              <span class="icon"><i class="fab fa-weixin"></i></span>
+              <span>WeChat</span>
+            </a>
+            <div id="wechat-tip" style="display:none; position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); background:#1a1a1a; color:#fff; border-radius:8px; padding:8px 14px; font-family:'Noto Sans',sans-serif; font-size:0.78rem; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:100; line-height:1.5;">
+              Click to show QR code
+              <div style="position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); width:10px; height:10px; background:#1a1a1a; clip-path:polygon(0 0,100% 0,50% 100%);"></div>
+            </div>
+          </div>
+          <span style="font-family:'Noto Sans',sans-serif; font-size:0.78rem; color:#bbb;"></span>
+        </div>
+      </div>
+
+      <!-- Right image: timber frame -->
+      <div style="text-align:left;">
+        <img src="./assets/house_frame.png" alt="Timber frame structure"
+             style="max-height:300px; width:auto; max-width:100%; border-radius:8px; display:inline-block; mix-blend-mode:multiply;"/>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ HERO VIDEO ════════════════ -->
+<div style="width:100%; padding: 0 0 0;">
+  <div class="hero-gif-wrap" style="border-radius:0; border-left:none; border-right:none; box-shadow:none;">
+    <video autoplay loop muted playsinline style="width:100%; display:block;">
+      <source src="./assets/build_gifs_grid_10x10.mp4" type="video/mp4"/>
+    </video>
+  </div>
+</div>
+
+<!-- ════════════════ ABSTRACT ════════════════ -->
+<section class="section" style="padding: 2rem 1.5rem 3rem;">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading">Abstract</h2>
+    <div style="height:0.8rem;"></div>
+    <div class="abstract-body">
+      <p>
+        We introduce <strong>DreamHouse</strong>, a benchmark for <em>physical generative reasoning</em> — the capacity to synthesize artifacts that concurrently satisfy geometric, structural, constructability, and code-compliance constraints. Grounded in residential timber-frame construction, a domain with fully codified engineering standards and objectively verifiable correctness, DreamHouse comprises over 26,000 structures spanning 13 architectural styles verified to LOD&nbsp;350, paired with a deterministic 10-test structural validation framework. Unlike static benchmarks, it supports iterative agentic interaction: models observe intermediate build states, generate construction actions, and receive structured environmental feedback. Extensive experiments with state-of-the-art VLMs reveal substantial capability gaps largely invisible on existing leaderboards, establishing physical validity as a critical evaluation axis orthogonal to visual realism.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ════════════════ MODEL SHOWCASE ════════════════ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading">Model Showcase</h2>
+    <p style="font-family:'Noto Sans',sans-serif; font-size:0.85rem; color:#aaa; text-align:center; margin-bottom:1.6rem;">
+      Click a ground-truth image to see how each model responds.
+    </p>
+
+    <!-- Thumbnail strip -->
+    <div id="showcase-targets" style="display:flex; gap:10px; flex-wrap:nowrap; overflow-x:auto; padding-bottom:12px; margin-bottom:1.8rem; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;"></div>
+
+    <!-- Output panel: 3 models only -->
+    <div class="showcase-grid" id="showcase-output">
+      <div class="showcase-cell">
+        <div class="showcase-cell-label">Claude 4.5 Opus</div>
+        <div class="showcase-img-wrap placeholder-dark" id="out-claude" style="background:#333333;"><i class="fas fa-image"></i><small>Select a structure above</small></div>
+      </div>
+      <div class="showcase-cell">
+        <div class="showcase-cell-label">Gemini 3 Flash</div>
+        <div class="showcase-img-wrap placeholder-dark" id="out-gemini" style="background:#333333;"><i class="fas fa-image"></i><small>Select a structure above</small></div>
+      </div>
+      <div class="showcase-cell">
+        <div class="showcase-cell-label">GPT-5</div>
+        <div class="showcase-img-wrap placeholder-dark" id="out-gpt5" style="background:#333333;"><i class="fas fa-image"></i><small>Select a structure above</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .showcase-thumb {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    border: 2px solid #c8d8f0; border-radius: 8px; padding: 6px;
+    background: #f0f6ff; cursor: pointer; width: 168px; flex-shrink: 0;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    scroll-snap-align: start;
+  }
+  .showcase-thumb:hover { border-color: #7aaae0; }
+  .showcase-thumb.active { border-color: #3273dc; box-shadow: 0 2px 10px rgba(50,115,220,0.2); background: #e6f0ff; }
+  .showcase-thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; display: block; background: #333333; }
+  .showcase-thumb span { font-family: 'Google Sans', sans-serif; font-size: 0.68rem; color: #555; text-align: center; line-height: 1.3; }
+
+  #showcase-targets::-webkit-scrollbar { height: 8px; }
+  #showcase-targets::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
+  #showcase-targets::-webkit-scrollbar-thumb { background: #bbb; border-radius: 4px; }
+  #showcase-targets::-webkit-scrollbar-thumb:hover { background: #888; }
+
+  .thumb-preview {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    border: 2px solid #444;
+    width: 320px;
+    height: 320px;
+    background: #333333;
+  }
+  .thumb-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb-preview.visible { display: block; }
+
+  .showcase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 600px) { .showcase-grid { grid-template-columns: 1fr; } }
+
+  .showcase-cell { display: flex; flex-direction: column; border: 2px solid #e0e0e0; border-radius: 10px; overflow: hidden; }
+  .showcase-cell-label {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 1rem; font-weight: 500; color: #1a1a1a;
+    text-align: center; padding: 10px 0;
+    background: #fafafa; border-bottom: 2px solid #e0e0e0;
+  }
+  .showcase-img-wrap { width: 100%; aspect-ratio: 1; background: #333333; line-height: 0; }
+  .showcase-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .showcase-img-wrap.placeholder-dark {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; color: #777; font-size: 1rem; line-height: 1.5; background: #333333;
+  }
+  .showcase-img-wrap.placeholder-dark small { font-family: 'Google Sans', sans-serif; font-size: 0.68rem; color: #888; }
+</style>
+
+<script>
+const CASES = [
+  // ── Pinned 5 ──
+  { id: "AF_01_0060_front_right_view",  label: "A-Frame #0060",        pinned: true },
+  { id: "BN_01_0003_front_right_view",  label: "Barn #0003",           pinned: true },
+  { id: "COL_03_1834_front_right_view", label: "Colonial #1834",       pinned: true },
+  { id: "CR_02_1152_front_right_view",  label: "Cruciform #1152",      pinned: true },
+  { id: "FH_04_1265_front_right_view",  label: "Farmhouse #1265",      pinned: true },
+  // ── Rest: alphabetical ──
+  { id: "AF_01_0086_front_right_view",  label: "A-Frame #0086" },
+  { id: "AF_01_0106_front_right_view",  label: "A-Frame #0106" },
+  { id: "AF_03_0343_front_right_view",  label: "A-Frame #0343" },
+  { id: "AF_03_0356_front_right_view",  label: "A-Frame #0356" },
+  { id: "BN_01_0081_front_right_view",  label: "Barn #0081" },
+  { id: "BN_02_1076_front_right_view",  label: "Barn #1076" },
+  { id: "BN_04_1846_front_right_view",  label: "Barn #1846" },
+  { id: "BN_06_2972_front_right_view",  label: "Barn #2972" },
+  { id: "CH_01_0151_front_right_view",  label: "Carriage House #0151" },
+  { id: "CH_01_0283_front_right_view",  label: "Carriage House #0283" },
+  { id: "CH_02_0746_front_right_view",  label: "Carriage House #0746" },
+  { id: "CH_02_0944_front_right_view",  label: "Carriage House #0944" },
+  { id: "CH_02_1053_front_right_view",  label: "Carriage House #1053" },
+  { id: "CH_03_1471_front_right_view",  label: "Carriage House #1471" },
+  { id: "COL_01_0387_front_right_view", label: "Colonial #0387" },
+  { id: "COL_01_0636_front_right_view", label: "Colonial #0636" },
+  { id: "COL_03_1444_front_right_view", label: "Colonial #1444" },
+  { id: "CR_01_0201_front_right_view",  label: "Cruciform #0201" },
+  { id: "FH_01_0077_front_right_view",  label: "Farmhouse #0077" },
+  { id: "FH_02_0395_front_right_view",  label: "Farmhouse #0395" },
+  { id: "FH_02_0504_front_right_view",  label: "Farmhouse #0504" },
+  { id: "FH_02_0560_front_right_view",  label: "Farmhouse #0560" },
+  { id: "FH_03_0959_front_right_view",  label: "Farmhouse #0959" },
+  { id: "FH_04_1201_front_right_view",  label: "Farmhouse #1201" },
+  { id: "FH_06_1733_front_right_view",  label: "Farmhouse #1733" },
+  { id: "RN_01_0061_front_right_view",  label: "Ranch #0061" },
+  { id: "RN_02_0135_front_right_view",  label: "Ranch #0135" },
+  { id: "RN_05_0489_front_right_view",  label: "Ranch #0489" },
+  { id: "SB_01_0011_front_right_view",  label: "Saltbox #0011" },
+  { id: "SB_01_0084_front_right_view",  label: "Saltbox #0084" },
+  { id: "SB_01_0158_front_right_view",  label: "Saltbox #0158" },
+  { id: "SB_02_0249_front_right_view",  label: "Saltbox #0249" },
+  { id: "SB_02_0320_front_right_view",  label: "Saltbox #0320" },
+  { id: "SB_03_0405_front_right_view",  label: "Saltbox #0405" },
+  { id: "SB_04_0523_front_right_view",  label: "Saltbox #0523" },
+  { id: "SB_05_0719_front_right_view",  label: "Saltbox #0719" },
+  { id: "SL_02_0917_front_right_view",  label: "Split-Level #0917" },
+  { id: "SL_03_1373_front_right_view",  label: "Split-Level #1373" },
+  { id: "TH_04_0258_front_right_view",  label: "Townhouse #0258" },
+  { id: "TH_04_0268_front_right_view",  label: "Townhouse #0268" },
+  { id: "TH_05_0358_front_right_view",  label: "Townhouse #0358" },
+  { id: "ZP_01_0173_front_right_view",  label: "Z-Plan #0173" },
+];
+
+const base = './assets/showcase';
+const strip = document.getElementById('showcase-targets');
+
+CASES.forEach((c, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'showcase-thumb' + (i === 1 ? ' active' : '');
+  btn.innerHTML = `<img src="${base}/${c.id}/target.png" alt="${c.label}" loading="lazy"/><span>${c.label}</span>`;
+  btn.addEventListener('click', () => selectShowcase(c.id, btn));
+  strip.appendChild(btn);
+});
+
+// Default to Barn #0003 (index 1)
+selectShowcase(CASES[1].id, strip.children[1]);
+
+function selectShowcase(id, btn) {
+  document.querySelectorAll('.showcase-thumb').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const setImg = (elId, src) => {
+    const wrap = document.getElementById(elId);
+    wrap.className = 'showcase-img-wrap';
+    wrap.style.background = '#333333';
+    wrap.innerHTML = `<img src="${src}" loading="lazy"/>`;
+  };
+  setImg('out-claude',  `${base}/${id}/claude.png`);
+  setImg('out-gemini',  `${base}/${id}/gemini.png`);
+  setImg('out-gpt5',    `${base}/${id}/gpt5.png`);
+}
+
+// Hover preview
+const preview = document.createElement('div');
+preview.className = 'thumb-preview';
+preview.innerHTML = '<img/>';
+document.body.appendChild(preview);
+const previewImg = preview.querySelector('img');
+
+document.getElementById('showcase-targets').addEventListener('mouseover', e => {
+  const thumb = e.target.closest('.showcase-thumb');
+  if (!thumb) return;
+  const src = thumb.querySelector('img')?.src;
+  if (!src) return;
+  previewImg.src = src;
+  preview.classList.add('visible');
+});
+
+document.getElementById('showcase-targets').addEventListener('mousemove', e => {
+  const offset = 16;
+  let x = e.clientX + offset;
+  let y = e.clientY + offset;
+  if (x + 320 > window.innerWidth) x = e.clientX - 320 - offset;
+  if (y + 320 > window.innerHeight) y = e.clientY - 320 - offset;
+  preview.style.left = x + 'px';
+  preview.style.top  = y + 'px';
+});
+
+document.getElementById('showcase-targets').addEventListener('mouseleave', () => {
+  preview.classList.remove('visible');
+});
+</script>
+<!-- ════════════════ VALIDATION SUITE ════════════════ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading">Structural Validation Suite</h2>
+
+    <div class="val-grid">
+
+      <!-- T1: Load Path -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">Topological Connectivity</div>
+          <div class="val-name">T1 · Load path</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="80,18 128,54 32,54" fill="#e8eaf0" stroke="#9aa0b8" stroke-width="1.2"/>
+            <rect x="32" y="54" width="12" height="50" rx="1" fill="#d4d8e8" stroke="#7a82a8" stroke-width="1"/>
+            <rect x="116" y="54" width="12" height="50" rx="1" fill="#d4d8e8" stroke="#7a82a8" stroke-width="1"/>
+            <rect x="22" y="104" width="116" height="10" rx="1" fill="#c8cce0" stroke="#7a82a8" stroke-width="1"/>
+            <rect x="16" y="114" width="128" height="10" rx="1" fill="#bbbfd4" stroke="#7a82a8" stroke-width="1"/>
+            <line x1="38" y1="56" x2="38" y2="102" stroke="#3273dc" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#lpa)"/>
+            <line x1="122" y1="56" x2="122" y2="102" stroke="#3273dc" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#lpa)"/>
+            <line x1="80" y1="20" x2="80" y2="12" stroke="#3273dc" stroke-width="1.5" marker-start="url(#lps)"/>
+            <text x="80" y="132" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#3273dc">σ(v)=1 ∀v ∈ V</text>
+            <defs>
+              <marker id="lpa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="#3273dc" stroke-width="1.5" stroke-linecap="round"/></marker>
+              <marker id="lps" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#3273dc" stroke-width="1.5" stroke-linecap="round"/></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="val-desc">Every member's load path terminates at a grounded element (z &lt; 0.1 m). AABB adjacency with ε = 0.05 m tolerance.</div>
+      </div>
+
+      <!-- T2: Span Limits -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">IRC Compliance</div>
+          <div class="val-name">T2 · Span limits</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect x="18" y="62" width="8" height="50" fill="#e8eaf0" stroke="#9aa0b8" stroke-width="1"/>
+            <rect x="134" y="62" width="8" height="50" fill="#e8eaf0" stroke="#9aa0b8" stroke-width="1"/>
+            <rect x="26" y="70" width="108" height="9" rx="1" fill="#d4d8e8" stroke="#7a82a8" stroke-width="0.8"/>
+            <rect x="26" y="86" width="108" height="9" rx="1" fill="#d4d8e8" stroke="#7a82a8" stroke-width="0.8"/>
+            <rect x="26" y="102" width="108" height="9" rx="1" fill="#d4d8e8" stroke="#7a82a8" stroke-width="0.8"/>
+            <line x1="26" y1="54" x2="134" y2="54" stroke="#3273dc" stroke-width="1" marker-start="url(#da2)" marker-end="url(#da2)"/>
+            <text x="80" y="49" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="9" fill="#3273dc">L</text>
+            <rect x="38" y="118" width="84" height="15" rx="3" fill="#f0f5ff" stroke="#b0c8f0" stroke-width="0.8"/>
+            <text x="80" y="129" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8.5" fill="#3273dc">L ≤ (1+τ) · L*</text>
+            <defs>
+              <marker id="da2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#3273dc" stroke-width="1.5" stroke-linecap="round"/></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="val-desc">Joist and rafter spans checked against IRC look-up tables. Rafter span halved when purlins are present. Tolerance τ = 0.03.</div>
+      </div>
+
+      <!-- T3: On-Centre Spacing -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">IRC Compliance</div>
+          <div class="val-name">T3 · On-centre spacing</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect x="18" y="50" width="8" height="70" fill="#e8eaf0" stroke="#9aa0b8" stroke-width="1"/>
+            <rect x="56" y="50" width="8" height="70" fill="#d4d8e8" stroke="#7a82a8" stroke-width="0.8"/>
+            <rect x="95" y="50" width="8" height="70" fill="#d4d8e8" stroke="#7a82a8" stroke-width="0.8"/>
+            <rect x="134" y="50" width="8" height="70" fill="#e8eaf0" stroke="#9aa0b8" stroke-width="1"/>
+            <line x1="22" y1="40" x2="60" y2="40" stroke="#3273dc" stroke-width="0.8" marker-start="url(#da3)" marker-end="url(#da3)"/>
+            <text x="41" y="35" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#3273dc">s</text>
+            <line x1="60" y1="40" x2="99" y2="40" stroke="#3273dc" stroke-width="0.8" marker-start="url(#da3)" marker-end="url(#da3)"/>
+            <text x="80" y="35" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#3273dc">s</text>
+            <rect x="28" y="118" width="104" height="15" rx="3" fill="#f0f5ff" stroke="#b0c8f0" stroke-width="0.8"/>
+            <text x="80" y="129" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8.5" fill="#3273dc">s ∈ {406, 610} ±50 mm</text>
+            <defs>
+              <marker id="da3" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#3273dc" stroke-width="1.5" stroke-linecap="round"/></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="val-desc">Joist groups checked for standard 16″ (406 mm) or 24″ (610 mm) on-centre spacing, within 50 mm tolerance.</div>
+      </div>
+
+      <!-- T4: Lumber Dimensions -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">IRC Compliance</div>
+          <div class="val-name">T4 · Lumber dimensions</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect x="38" y="30" width="84" height="50" rx="2" fill="#d4d8e8" stroke="#7a82a8" stroke-width="1.2"/>
+            <line x1="38" y1="90" x2="38" y2="100" stroke="#3273dc" stroke-width="0.8"/>
+            <line x1="122" y1="90" x2="122" y2="100" stroke="#3273dc" stroke-width="0.8"/>
+            <line x1="38" y1="96" x2="122" y2="96" stroke="#3273dc" stroke-width="0.8" marker-start="url(#da4)" marker-end="url(#da4)"/>
+            <text x="80" y="110" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#3273dc">w ∈ {38, 89, 140} mm</text>
+            <line x1="130" y1="30" x2="140" y2="30" stroke="#3273dc" stroke-width="0.8"/>
+            <line x1="130" y1="80" x2="140" y2="80" stroke="#3273dc" stroke-width="0.8"/>
+            <line x1="136" y1="30" x2="136" y2="80" stroke="#3273dc" stroke-width="0.8" marker-start="url(#da4)" marker-end="url(#da4)"/>
+            <text x="80" y="125" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#3273dc">d ∈ {89…286} mm</text>
+            <defs>
+              <marker id="da4" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#3273dc" stroke-width="1.5" stroke-linecap="round"/></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="val-desc">Each framing member's two smallest cross-section dimensions matched to standard nominal lumber sizes (±10/20 mm tolerance).</div>
+      </div>
+
+      <!-- T5: Deflection -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">Structural Physics</div>
+          <div class="val-name">T5 · Deflection L/360</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect x="22" y="62" width="14" height="40" rx="1" fill="#e8eaf0" stroke="#9aa0b8" stroke-width="1"/>
+            <rect x="124" y="62" width="14" height="40" rx="1" fill="#e8eaf0" stroke="#9aa0b8" stroke-width="1"/>
+            <line x1="36" y1="68" x2="124" y2="68" stroke="#bbb" stroke-width="1" stroke-dasharray="4 3"/>
+            <path d="M36,68 Q80,92 124,68" fill="none" stroke="#7a82a8" stroke-width="2" stroke-linecap="round"/>
+            <line x1="80" y1="68" x2="80" y2="88" stroke="#3273dc" stroke-width="1.2" marker-end="url(#da5d)"/>
+            <text x="90" y="82" font-family="'Google Sans',sans-serif" font-size="9" fill="#3273dc">δ</text>
+            <line x1="44" y1="57" x2="116" y2="57" stroke="#c05000" stroke-width="1"/>
+            <line x1="50" y1="57" x2="50" y2="65" stroke="#c05000" stroke-width="1" marker-end="url(#da5w)"/>
+            <line x1="70" y1="57" x2="70" y2="65" stroke="#c05000" stroke-width="1" marker-end="url(#da5w)"/>
+            <line x1="90" y1="57" x2="90" y2="65" stroke="#c05000" stroke-width="1" marker-end="url(#da5w)"/>
+            <line x1="110" y1="57" x2="110" y2="65" stroke="#c05000" stroke-width="1" marker-end="url(#da5w)"/>
+            <rect x="30" y="108" width="100" height="15" rx="3" fill="#fff8e1" stroke="#f0d080" stroke-width="0.8"/>
+            <text x="80" y="119" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8.5" fill="#7a5800">δ ≤ (1+0.08)·L/360</text>
+            <defs>
+              <marker id="da5d" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="#3273dc" stroke-width="1.5" stroke-linecap="round"/></marker>
+              <marker id="da5w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="#c05000" stroke-width="1.5" stroke-linecap="round"/></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="val-desc">Mid-span deflection δ = 5wL⁴/384EI under w = 1900 N/m, E = 12 GPa. Must satisfy δ ≤ 1.08 · L/360.</div>
+      </div>
+
+      <!-- T6: Roof Coverage -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">Geometric Integrity</div>
+          <div class="val-name">T6 · Roof coverage</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- footprint grid -->
+            <rect x="20" y="30" width="120" height="90" rx="2" fill="#eef3f8" stroke="#9aa0b8" stroke-width="0.8"/>
+            <!-- grid lines -->
+            <line x1="50" y1="30" x2="50" y2="120" stroke="#c8d0e0" stroke-width="0.5"/>
+            <line x1="80" y1="30" x2="80" y2="120" stroke="#c8d0e0" stroke-width="0.5"/>
+            <line x1="110" y1="30" x2="110" y2="120" stroke="#c8d0e0" stroke-width="0.5"/>
+            <line x1="20" y1="60" x2="140" y2="60" stroke="#c8d0e0" stroke-width="0.5"/>
+            <line x1="20" y1="90" x2="140" y2="90" stroke="#c8d0e0" stroke-width="0.5"/>
+            <!-- covered cells (rafter projection) -->
+            <rect x="21" y="31" width="29" height="29" fill="#3273dc" opacity="0.2"/>
+            <rect x="51" y="31" width="29" height="29" fill="#3273dc" opacity="0.2"/>
+            <rect x="81" y="31" width="29" height="29" fill="#3273dc" opacity="0.2"/>
+            <rect x="111" y="31" width="28" height="29" fill="#3273dc" opacity="0.2"/>
+            <rect x="21" y="61" width="29" height="29" fill="#3273dc" opacity="0.2"/>
+            <rect x="51" y="61" width="29" height="29" fill="#3273dc" opacity="0.2"/>
+            <rect x="81" y="61" width="29" height="29" fill="#3273dc" opacity="0.2"/>
+            <rect x="111" y="61" width="28" height="29" fill="#3273dc" opacity="0.2"/>
+            <!-- uncovered cells -->
+            <rect x="21" y="91" width="29" height="28" fill="#fdecea" opacity="0.8"/>
+            <rect x="111" y="91" width="28" height="28" fill="#fdecea" opacity="0.8"/>
+            <rect x="42" y="108" width="76" height="15" rx="3" fill="#f0f5ff" stroke="#b0c8f0" stroke-width="0.8"/>
+            <text x="80" y="119" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8.5" fill="#3273dc">ρ = |R| / |F| ≥ 0.70</text>
+          </svg>
+        </div>
+        <div class="val-desc">Footprint partitioned into 1 m × 1 m cells. Fraction covered by rafter projections (margin 0.3 m) must be ≥ 70%.</div>
+      </div>
+
+      <!-- T7: Gap Detection -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">Geometric Integrity</div>
+          <div class="val-name">T7 · Gap detection</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- roof outline -->
+            <polygon points="80,18 138,68 22,68" fill="#e8eaf0" stroke="#9aa0b8" stroke-width="1.2"/>
+            <!-- gap highlight -->
+            <polygon points="80,18 138,68 22,68" fill="none" stroke="#9aa0b8" stroke-width="1.2"/>
+            <!-- missing rafter gap -->
+            <rect x="58" y="30" width="22" height="38" rx="1" fill="#fdecea" stroke="#f5b8b8" stroke-width="0.8"/>
+            <text x="69" y="53" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="9" fill="#c62828">gap</text>
+            <!-- good rafters -->
+            <line x1="80" y1="18" x2="100" y2="68" stroke="#7a82a8" stroke-width="4" stroke-linecap="round"/>
+            <line x1="80" y1="18" x2="118" y2="68" stroke="#7a82a8" stroke-width="4" stroke-linecap="round"/>
+            <line x1="80" y1="18" x2="42" y2="68" stroke="#7a82a8" stroke-width="4" stroke-linecap="round"/>
+            <line x1="80" y1="18" x2="22" y2="68" stroke="#7a82a8" stroke-width="4" stroke-linecap="round"/>
+            <rect x="36" y="110" width="88" height="15" rx="3" fill="#fdecea" stroke="#f5b8b8" stroke-width="0.8"/>
+            <text x="80" y="121" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8.5" fill="#c62828">γ = |Q| / |F| ≤ 0.20</text>
+          </svg>
+        </div>
+        <div class="val-desc">Gap ratio γ = uncovered / total footprint cells must be ≤ 20%. Complement of T6, retained for diagnostic granularity.</div>
+      </div>
+
+      <!-- T8: Cantilever Limits -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">Structural Physics</div>
+          <div class="val-name">T8 · Cantilever limits</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- elevated sill -->
+            <rect x="20" y="55" width="120" height="10" rx="1" fill="#d4d8e8" stroke="#7a82a8" stroke-width="1"/>
+            <!-- supports -->
+            <rect x="28" y="65" width="10" height="45" rx="1" fill="#c8cce0" stroke="#7a82a8" stroke-width="0.8"/>
+            <rect x="74" y="65" width="10" height="45" rx="1" fill="#c8cce0" stroke="#7a82a8" stroke-width="0.8"/>
+            <rect x="122" y="65" width="10" height="45" rx="1" fill="#c8cce0" stroke="#7a82a8" stroke-width="0.8"/>
+            <!-- max gap annotation -->
+            <line x1="38" y1="48" x2="74" y2="48" stroke="#3273dc" stroke-width="0.8" marker-start="url(#da8)" marker-end="url(#da8)"/>
+            <text x="56" y="44" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#3273dc">Δ ≤ 3.0 m</text>
+            <!-- cantilever overhang -->
+            <rect x="130" y="55" width="24" height="10" rx="1" fill="#fdecea" stroke="#f5b8b8" stroke-width="0.8"/>
+            <line x1="132" y1="48" x2="154" y2="48" stroke="#c62828" stroke-width="0.8" marker-start="url(#da8r)" marker-end="url(#da8r)"/>
+            <text x="143" y="44" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#c62828">c</text>
+            <rect x="28" y="116" width="104" height="15" rx="3" fill="#f0f5ff" stroke="#b0c8f0" stroke-width="0.8"/>
+            <text x="80" y="127" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#3273dc">|P_s| ≥ 2, Δ_max ≤ c_sp</text>
+            <defs>
+              <marker id="da8" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#3273dc" stroke-width="1.5" stroke-linecap="round"/></marker>
+              <marker id="da8r" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="#c62828" stroke-width="1.5" stroke-linecap="round"/></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="val-desc">Elevated sills (z &gt; 1 m) must have ≥ 2 nearby supports within 1.5 m laterally, with max inter-support gap ≤ 3.0 m.</div>
+      </div>
+
+      <!-- T9: Stability Score -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">Topological Connectivity</div>
+          <div class="val-name">T9 · Stability index</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- full structure grounded -->
+            <polygon points="80,18 128,54 32,54" fill="#eef6ee" stroke="#a8d5a8" stroke-width="1.2"/>
+            <rect x="32" y="54" width="12" height="50" rx="1" fill="#c8d8c8" stroke="#6a9a6a" stroke-width="1"/>
+            <rect x="116" y="54" width="12" height="50" rx="1" fill="#c8d8c8" stroke="#6a9a6a" stroke-width="1"/>
+            <rect x="22" y="104" width="116" height="10" rx="1" fill="#b8ccb8" stroke="#6a9a6a" stroke-width="1"/>
+            <!-- check on each member -->
+            <text x="80" y="40" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="10" fill="#2e7d32">✓</text>
+            <text x="38" y="82" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="10" fill="#2e7d32">✓</text>
+            <text x="122" y="82" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="10" fill="#2e7d32">✓</text>
+            <rect x="34" y="118" width="92" height="15" rx="3" fill="#eef6ee" stroke="#a8d5a8" stroke-width="0.8"/>
+            <text x="80" y="129" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8.5" fill="#2e7d32">Σ = Σσ(v) / |V| ≥ 1.0</text>
+          </svg>
+        </div>
+        <div class="val-desc">Topological Stability Index: fraction of grounded members must equal 1.0. Strictly stronger than T1 — requires all members simultaneously grounded.</div>
+      </div>
+
+      <!-- T10: Dual-End Connection -->
+      <div class="val-card">
+        <div class="val-card-head">
+          <div class="val-cat">Geometric Integrity</div>
+          <div class="val-name">T10 · Dual-end connection</div>
+        </div>
+        <div class="val-img">
+          <svg viewBox="0 0 160 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- valid rafter (left) -->
+            <rect x="22" y="30" width="50" height="80" rx="2" fill="#eef6ee" stroke="#a8d5a8" stroke-width="1"/>
+            <text x="47" y="22" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="7.5" fill="#2e7d32">valid</text>
+            <rect x="30" y="34" width="34" height="12" rx="1" fill="#c8d8c8" stroke="#6a9a6a" stroke-width="0.8"/>
+            <text x="47" y="44" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="7" fill="#2e7d32">top ✓</text>
+            <rect x="30" y="78" width="34" height="12" rx="1" fill="#c8d8c8" stroke="#6a9a6a" stroke-width="0.8"/>
+            <text x="47" y="88" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="7" fill="#2e7d32">bot ✓</text>
+            <rect x="38" y="46" width="18" height="32" rx="1" fill="#d4e8d4" stroke="#6a9a6a" stroke-width="0.8"/>
+            <!-- invalid rafter (right) -->
+            <rect x="88" y="30" width="50" height="80" rx="2" fill="#fdecea" stroke="#f5b8b8" stroke-width="1"/>
+            <text x="113" y="22" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="7.5" fill="#c62828">hinge fail</text>
+            <rect x="96" y="78" width="34" height="12" rx="1" fill="#e8b8b8" stroke="#c06060" stroke-width="0.8"/>
+            <text x="113" y="88" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="7" fill="#c62828">bot ✓</text>
+            <rect x="96" y="34" width="34" height="12" rx="1" fill="#fdecea" stroke="#f5b8b8" stroke-width="0.8" stroke-dasharray="3 2"/>
+            <text x="113" y="44" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="7" fill="#c62828">top ✗</text>
+            <rect x="104" y="46" width="18" height="32" rx="1" fill="#e8b8b8" stroke="#c06060" stroke-width="0.8"/>
+            <text x="80" y="125" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="8" fill="#555">φ_bot = 1 ∧ φ_top = 1</text>
+          </svg>
+        </div>
+        <div class="val-desc">Each rafter and stud must connect at both ends (bottom 20% and top 20% zones). Missing top = hinge failure; missing bottom = floating column.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ════════════════ EVALUATION PROTOCOL ════════════════ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading">Evaluation Protocol</h2>
+
+    <svg width="100%" viewBox="0 0 960 440" xmlns="http://www.w3.org/2000/svg" style="display:block; max-width:960px; margin:0 auto;">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Column headers -->
+      <text x="160" y="28" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="15" font-weight="500" fill="#3273dc" letter-spacing="0.04em">PLANNER-ATOMIC</text>
+      <text x="480" y="28" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="15" font-weight="500" fill="#3273dc" letter-spacing="0.04em">PLANNER-REACTIVE</text>
+      <text x="800" y="28" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="15" font-weight="500" fill="#3273dc" letter-spacing="0.04em">PLANNER-MANAGED</text>
+
+      <!-- COLUMN 1: ATOMIC -->
+      <g data-proto="atomic" class="proto-col">
+      <rect class="proto-bg" x="40" y="40" width="240" height="340" rx="8" fill="transparent" stroke="none"/>
+      <rect x="60" y="48" width="200" height="44" rx="6" fill="#f5f7ff" stroke="#c5d3f5" stroke-width="1"/>
+      <text x="160" y="66" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#1a1a1a">Multi-view task input I&#x2080;</text>
+      <text x="160" y="82" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#888">5 views + building context</text>
+      <line x1="160" y1="92" x2="160" y2="128" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="92" y="128" width="136" height="44" rx="6" fill="#1a1a1a" stroke="none"/>
+      <text x="160" y="146" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#fff">VLM</text>
+      <text x="160" y="162" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">full construction script a&#x2081;</text>
+      <line x1="160" y1="172" x2="160" y2="208" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="70" y="208" width="180" height="44" rx="6" fill="#fff8e1" stroke="#f0d080" stroke-width="1"/>
+      <text x="160" y="226" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#7a5800">Structural validator V</text>
+      <text x="160" y="242" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#a07000">all 10 tests &#x2192; pass/fail</text>
+      <path d="M70 230 Q36 230 36 150 Q36 128 92 138" fill="none" stroke="#e05000" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+      <text x="26" y="188" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#e05000" transform="rotate(-90,26,188)">retry</text>
+      <text x="160" y="282" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">T_S &#x2014; single script.</text>
+      <text x="160" y="298" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">Retry with full history H_t.</text>
+      <text x="160" y="314" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">No phase feedback.</text>
+      </g>
+
+      <!-- COLUMN 2: REACTIVE -->
+      <g data-proto="reactive" class="proto-col">
+      <rect class="proto-bg" x="360" y="40" width="240" height="360" rx="8" fill="transparent" stroke="none"/>
+      <rect x="380" y="48" width="200" height="44" rx="6" fill="#f5f7ff" stroke="#c5d3f5" stroke-width="1"/>
+      <text x="480" y="66" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#1a1a1a">Multi-view task input I&#x2080;</text>
+      <text x="480" y="82" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#888">5 views + building context</text>
+      <line x1="480" y1="92" x2="480" y2="128" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="412" y="128" width="136" height="44" rx="6" fill="#1a1a1a" stroke="none"/>
+      <text x="480" y="146" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#fff">VLM</text>
+      <text x="480" y="162" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">all-phases script (k=1&#x2026;K)</text>
+      <line x1="480" y1="172" x2="480" y2="208" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="384" y="208" width="192" height="44" rx="6" fill="#eef6ee" stroke="#a8d5a8" stroke-width="1"/>
+      <text x="480" y="226" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="13" font-weight="500" fill="#2e6b2e">Mid-phase V_mid check</text>
+      <text x="480" y="242" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#4a8a4a">load path + stability after phase k</text>
+      <line x1="480" y1="252" x2="480" y2="288" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="390" y="288" width="180" height="44" rx="6" fill="#fff8e1" stroke="#f0d080" stroke-width="1"/>
+      <text x="480" y="306" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#7a5800">Structural validator V</text>
+      <text x="480" y="322" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#a07000">all 10 tests &#x2192; pass/fail</text>
+      <path d="M384 230 Q348 230 348 150 Q348 128 412 138" fill="none" stroke="#e05000" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+      <text x="338" y="188" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#e05000" transform="rotate(-90,338,188)">full regen</text>
+      <text x="480" y="358" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">T_Q &#x2014; all phases in one script.</text>
+      <text x="480" y="374" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">Mid-phase fail invalidates k+1&#x2026;K.</text>
+      <text x="480" y="390" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">No external scaffolding.</text>
+      </g>
+
+      <!-- COLUMN 3: MANAGED -->
+      <g data-proto="managed" class="proto-col">
+      <rect class="proto-bg" x="680" y="40" width="240" height="400" rx="8" fill="transparent" stroke="none"/>
+      <rect x="700" y="48" width="200" height="44" rx="6" fill="#f5f7ff" stroke="#c5d3f5" stroke-width="1"/>
+      <text x="800" y="66" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#1a1a1a">Multi-view task input I&#x2080;</text>
+      <text x="800" y="82" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#888">5 views + building context</text>
+      <line x1="800" y1="92" x2="800" y2="118" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="706" y="118" width="188" height="38" rx="6" fill="#f0f5ff" stroke="#b0c8f0" stroke-width="1"/>
+      <text x="800" y="133" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="13" font-weight="500" fill="#1a4080">External phase manager</text>
+      <text x="800" y="149" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#3060a0">unlocks one phase k at a time</text>
+      <line x1="800" y1="156" x2="800" y2="178" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="732" y="178" width="136" height="44" rx="6" fill="#1a1a1a" stroke="none"/>
+      <text x="800" y="196" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#fff">VLM</text>
+      <text x="800" y="212" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">script for phase k only</text>
+      <line x1="800" y1="222" x2="800" y2="252" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="706" y="252" width="188" height="44" rx="6" fill="#eef6ee" stroke="#a8d5a8" stroke-width="1"/>
+      <text x="800" y="270" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="13" font-weight="500" fill="#2e6b2e">V_mid &#x2014; phase k check</text>
+      <text x="800" y="286" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#4a8a4a">scene s_t persists on fail</text>
+      <path d="M706 268 Q670 268 670 196 Q670 178 732 188" fill="none" stroke="#e05000" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+      <text x="660" y="232" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#e05000" transform="rotate(-90,660,232)">retry phase</text>
+      <line x1="800" y1="296" x2="800" y2="326" stroke="#aaa" stroke-width="1.2" marker-end="url(#arr)"/>
+      <rect x="710" y="326" width="180" height="36" rx="6" fill="#fff8e1" stroke="#f0d080" stroke-width="1"/>
+      <text x="800" y="341" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="14" font-weight="500" fill="#7a5800">Structural validator V</text>
+      <text x="800" y="357" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#a07000">all 10 tests &#x2192; pass/fail</text>
+      <text x="800" y="393" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">T_W &#x2014; strongest scaffolding.</text>
+      <text x="800" y="409" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">Fail never invalidates prior phases.</text>
+      <text x="800" y="425" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-size="12" fill="#aaa">Each phase is an independent sub-task.</text>
+      </g>
+
+      <!-- Vertical dividers -->
+      <line x1="320" y1="40" x2="320" y2="435" stroke="#ebebeb" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="640" y1="40" x2="640" y2="435" stroke="#ebebeb" stroke-width="1" stroke-dasharray="4 4"/>
+    </svg>
+
+  </div>
+</section>
+
+<!-- ════════════════ RESULTS ════════════════ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading">Results</h2>
+
+    <div class="result-wrap" style="max-width:100%; overflow-x:auto;">
+      <table style="font-size:0.95rem; min-width:700px;">
+        <thead>
+          <tr>
+            <th rowspan="2" style="text-align:left; border-right:1px solid #e8e8e8;">Model</th>
+            <th colspan="3" data-proto="atomic" style="text-align:center; border-right:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; cursor:pointer; transition:background 0.2s;">Planner-Atomic</th>
+            <th colspan="3" data-proto="reactive" style="text-align:center; border-right:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; cursor:pointer; transition:background 0.2s;">Planner-Reactive</th>
+            <th colspan="3" data-proto="managed" style="text-align:center; border-bottom:1px solid #e8e8e8; cursor:pointer; transition:background 0.2s;">Planner-Managed</th>
+          </tr>
+          <tr>
+            <th style="text-align:center; font-weight:400; color:#aaa;">Struct.</th>
+            <th style="text-align:center; font-weight:400; color:#aaa;">Visual</th>
+            <th style="text-align:center; font-weight:400; color:#aaa; border-right:1px solid #e8e8e8;">Joint</th>
+            <th style="text-align:center; font-weight:400; color:#aaa;">Struct.</th>
+            <th style="text-align:center; font-weight:400; color:#aaa;">Visual</th>
+            <th style="text-align:center; font-weight:400; color:#aaa; border-right:1px solid #e8e8e8;">Joint</th>
+            <th style="text-align:center; font-weight:400; color:#aaa;">Struct.</th>
+            <th style="text-align:center; font-weight:400; color:#aaa;">Visual</th>
+            <th style="text-align:center; font-weight:400; color:#aaa;">Joint</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">GPT-5</td>
+            <td style="text-align:center;"><strong>0.792</strong></td>
+            <td style="text-align:center;">0.312</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.035</td>
+            <td style="text-align:center;">0.302</td>
+            <td style="text-align:center;">0.293</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.003</td>
+            <td style="text-align:center;">0.333</td>
+            <td style="text-align:center;">0.179</td>
+            <td style="text-align:center;">0.008</td>
+          </tr>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">Claude 4.5 Opus</td>
+            <td style="text-align:center;">0.716</td>
+            <td style="text-align:center;"><strong>0.406</strong></td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;"><strong>0.071</strong></td>
+            <td style="text-align:center;">0.428</td>
+            <td style="text-align:center;">0.239</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.003</td>
+            <td style="text-align:center;">0.713</td>
+            <td style="text-align:center;">0.278</td>
+            <td style="text-align:center;">0.031</td>
+          </tr>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">Gemini 3 Flash</td>
+            <td style="text-align:center;">0.454</td>
+            <td style="text-align:center;">0.376</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.031</td>
+            <td style="text-align:center;">0.507</td>
+            <td style="text-align:center;">0.345</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.019</td>
+            <td style="text-align:center;"><strong>0.785</strong></td>
+            <td style="text-align:center;"><strong>0.313</strong></td>
+            <td style="text-align:center;"><strong>0.043</strong></td>
+          </tr>
+          <tr style="border-top:2px solid #e8e8e8;">
+            <td style="border-right:1px solid #f0f0f0;">Qwen3.5-397B-A17B</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center;">0.206</td>
+            <td style="text-align:center;">0.261</td>
+            <td style="text-align:center;">0.016</td>
+          </tr>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">Qwen3-VL-30B-A3B</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">N/A</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.000</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">N/A</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.000</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">N/A</td>
+            <td style="text-align:center;">0.000</td>
+          </tr>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">Qwen3-VL-8B</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">N/A</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.000</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">N/A</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.000</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">N/A</td>
+            <td style="text-align:center;">0.000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ════════════════ BIBTEX ════════════════ -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading">BibTeX</h2>
+    <div style="height:1.2rem;"></div>
+    <div style="position:relative; max-width:700px; margin:0 auto;">
+      <button onclick="copyBibtex(this)" style="position:absolute; top:10px; right:10px; font-family:'Google Sans',sans-serif; font-size:0.75rem; padding:5px 12px; border:1px solid #ccc; border-radius:5px; background:#fff; cursor:pointer; color:#555; transition:all 0.15s; z-index:1;">Copy</button>
+      <pre class="bibtex" id="bibtex-block">@article{dreamhousegpt2026,
+  title   = {DreamHouse: How Far Are Vision-Language Models
+             from Constructing the Real World?},
+  author  = {Yang, Luyu and Dai, Yutong and Yan, An and
+             Prabhu, Viraj and Xu, Ran and Chen, Zeyuan},
+  journal = {arXiv preprint},
+  year    = {2026},
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <p>
+    Webpage template adapted from
+    <a href="https://nerfies.github.io" target="_blank">Nerfies</a>,
+    under a <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a> license.
+  </p>
+  <p style="margin-top:4px;">
+    Questions? <a href="mailto:you@salesforce.com">Contact us</a>
+  </p>
+</footer>
+
+<script>
+  document.querySelectorAll('.model-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.model-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.model-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.target).classList.add('active');
+    });
+  });
+
+  // ── Cross-highlight: protocol diagram ↔ results table ──
+  const PROTO_COLORS = {
+    atomic:   { bg: 'rgba(50,115,220,0.08)', border: '#3273dc' },
+    reactive: { bg: 'rgba(46,125,50,0.08)',  border: '#2e7d32' },
+    managed:  { bg: 'rgba(230,80,0,0.08)',   border: '#e05000' },
+  };
+
+  function highlightProto(proto) {
+    // Highlight SVG column bg rect
+    document.querySelectorAll('.proto-col').forEach(g => {
+      const bg = g.querySelector('.proto-bg');
+      if (!bg) return;
+      if (g.dataset.proto === proto) {
+        bg.setAttribute('fill', PROTO_COLORS[proto].bg);
+        bg.setAttribute('stroke', PROTO_COLORS[proto].border);
+        bg.setAttribute('stroke-width', '1.5');
+      } else {
+        bg.setAttribute('fill', 'transparent');
+        bg.setAttribute('stroke', 'none');
+      }
+    });
+    // Highlight result table header
+    document.querySelectorAll('th[data-proto]').forEach(th => {
+      if (th.dataset.proto === proto) {
+        th.style.background = PROTO_COLORS[proto].bg;
+        th.style.color = PROTO_COLORS[proto].border;
+      } else {
+        th.style.background = '';
+        th.style.color = '';
+      }
+    });
+    // Highlight result table data cells by column index
+    const colMap = { atomic: [1,2,3], reactive: [4,5,6], managed: [7,8,9] };
+    document.querySelectorAll('.result-wrap tbody tr').forEach(row => {
+      Array.from(row.cells).forEach((td, i) => {
+        const match = proto && colMap[proto]?.includes(i);
+        td.style.background = match ? PROTO_COLORS[proto].bg : '';
+      });
+    });
+  }
+
+  function clearHighlight() {
+    document.querySelectorAll('.proto-col .proto-bg').forEach(bg => {
+      bg.setAttribute('fill', 'transparent');
+      bg.setAttribute('stroke', 'none');
+    });
+    document.querySelectorAll('th[data-proto]').forEach(th => {
+      th.style.background = '';
+      th.style.color = '';
+    });
+    document.querySelectorAll('.result-wrap tbody tr td').forEach(td => {
+      td.style.background = '';
+    });
+  }
+
+  // SVG column hover
+  document.querySelectorAll('.proto-col').forEach(g => {
+    g.style.cursor = 'pointer';
+    g.addEventListener('mouseenter', () => highlightProto(g.dataset.proto));
+    g.addEventListener('mouseleave', clearHighlight);
+  });
+
+  // Table header hover
+  document.querySelectorAll('th[data-proto]').forEach(th => {
+    th.addEventListener('mouseenter', () => highlightProto(th.dataset.proto));
+    th.addEventListener('mouseleave', clearHighlight);
+  });
+
+  // ── Validation card hover animations ──
+  const valAnims = {
+    0: (svg) => { // T1: load path arrows flow down
+      svg.querySelectorAll('line[stroke="#3273dc"]').forEach((l,i) => {
+        l.style.strokeDasharray = '4 3';
+        l.style.strokeDashoffset = '20';
+        l.style.animation = `flowDown 0.8s linear ${i*0.15}s infinite`;
+      });
+    },
+    1: (svg) => { // T2: span arrow pulses
+      svg.querySelectorAll('line[stroke="#3273dc"]').forEach(l => {
+        l.style.animation = 'spanPulse 1s ease-in-out infinite';
+      });
+      svg.querySelectorAll('text[fill="#3273dc"]').forEach(t => {
+        t.style.animation = 'spanPulse 1s ease-in-out infinite';
+      });
+    },
+    2: (svg) => { // T3: spacing lines slide in one by one
+      svg.querySelectorAll('line[stroke="#3273dc"]').forEach((l,i) => {
+        l.style.animation = `spacingSlide 0.5s ease-out ${i*0.2}s both infinite`;
+      });
+    },
+    3: (svg) => { // T4: brackets grow
+      svg.querySelectorAll('line[stroke="#3273dc"]').forEach((l,i) => {
+        l.style.transformOrigin = 'center';
+        l.style.animation = `bracketGrow 0.6s ease-out ${i*0.2}s both infinite`;
+      });
+    },
+    4: (svg) => { // T5: beam deflects (animate the curve path)
+      const beam = svg.querySelector('path[fill="none"][stroke="#7a82a8"]');
+      if (beam) {
+        beam.style.animation = 'none';
+        let t = 0, dir = 1;
+        svg._deflectTimer = setInterval(() => {
+          t += 0.05 * dir;
+          if (t >= 1) dir = -1;
+          if (t <= 0) dir = 1;
+          const deflect = 24 * Math.sin(t * Math.PI);
+          beam.setAttribute('d', `M36,68 Q80,${68 + deflect} 124,68`);
+        }, 30);
+      }
+      // Load arrows pulse
+      svg.querySelectorAll('line[stroke="#c05000"]').forEach(l => {
+        l.style.animation = 'spanPulse 0.8s ease-in-out infinite';
+      });
+    },
+    5: (svg) => { // T6: cells fill one by one
+      const cells = svg.querySelectorAll('rect[fill="#3273dc"]');
+      cells.forEach((c,i) => {
+        c.style.animation = `cellFill 0.4s ease-out ${i*0.08}s both infinite`;
+      });
+    },
+    6: (svg) => { // T7: gap rect pulses
+      const gap = svg.querySelector('rect[fill="#fdecea"]');
+      if (gap) gap.style.animation = 'gapPulse 0.9s ease-in-out infinite';
+    },
+    7: (svg) => { // T8: overhang rect pulses/grows to show it's too long
+      const overhang = svg.querySelector('rect[fill="#fdecea"]');
+      if (overhang) overhang.style.animation = 'gapPulse 0.9s ease-in-out infinite';
+      const overArrow = svg.querySelectorAll('line[stroke="#c62828"]');
+      overArrow.forEach(l => l.style.animation = 'spanPulse 0.9s ease-in-out infinite');
+      const overText = svg.querySelector('text[fill="#c62828"]');
+      if (overText) overText.style.animation = 'spanPulse 0.9s ease-in-out infinite';
+    },
+    8: (svg) => { // T9: check marks appear one by one
+      svg.querySelectorAll('text[fill="#2e7d32"]').forEach((t,i) => {
+        t.style.animation = `checkAppear 0.4s ease-out ${i*0.2}s both infinite`;
+      });
+    },
+    9: () => {}, // T10: no animation
+  };
+
+  document.querySelectorAll('.val-card').forEach((card, idx) => {
+    const svg = card.querySelector('svg');
+    if (!svg) return;
+    // Store original states
+    const origStates = new Map();
+    const saveOrig = (el) => {
+      if (!origStates.has(el)) origStates.set(el, el.getAttribute('d') || null);
+    };
+
+    card.addEventListener('mouseenter', () => {
+      if (valAnims[idx]) valAnims[idx](svg);
+    });
+    card.addEventListener('mouseleave', () => {
+      // Clear all animations
+      if (svg._deflectTimer) { clearInterval(svg._deflectTimer); svg._deflectTimer = null; }
+      svg.querySelectorAll('[style]').forEach(el => {
+        el.style.animation = '';
+        el.style.strokeDasharray = el.getAttribute('stroke-dasharray') || '';
+        el.style.strokeDashoffset = '';
+        el.style.transform = '';
+        el.style.opacity = '';
+        // Restore beam path
+        if (el.tagName === 'path' && origStates.has(el)) {
+          el.setAttribute('d', origStates.get(el));
+        }
+      });
+      // Re-save beam paths for next hover
+      svg.querySelectorAll('path').forEach(saveOrig);
+    });
+    // Pre-save original path data
+    svg.querySelectorAll('path').forEach(saveOrig);
+  });
+
+  function copyBibtex(btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.style.borderColor = '#2e7d32';
+      btn.style.color = '#2e7d32';
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.style.borderColor = '#ccc';
+        btn.style.color = '#555';
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>

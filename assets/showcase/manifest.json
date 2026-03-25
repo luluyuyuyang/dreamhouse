@@ -1,0 +1,190 @@
+[
+  {
+    "id": "AF_01_0060_front_right_view",
+    "label": "A-Frame #0060"
+  },
+  {
+    "id": "AF_01_0086_front_right_view",
+    "label": "A-Frame #0086"
+  },
+  {
+    "id": "AF_01_0106_front_right_view",
+    "label": "A-Frame #0106"
+  },
+  {
+    "id": "AF_03_0343_front_right_view",
+    "label": "A-Frame #0343"
+  },
+  {
+    "id": "AF_03_0356_front_right_view",
+    "label": "A-Frame #0356"
+  },
+  {
+    "id": "BN_01_0003_front_right_view",
+    "label": "Barn #0003"
+  },
+  {
+    "id": "BN_01_0081_front_right_view",
+    "label": "Barn #0081"
+  },
+  {
+    "id": "BN_02_1076_front_right_view",
+    "label": "Barn #1076"
+  },
+  {
+    "id": "BN_04_1846_front_right_view",
+    "label": "Barn #1846"
+  },
+  {
+    "id": "BN_06_2972_front_right_view",
+    "label": "Barn #2972"
+  },
+  {
+    "id": "CH_01_0151_front_right_view",
+    "label": "Carriage House #0151"
+  },
+  {
+    "id": "CH_01_0283_front_right_view",
+    "label": "Carriage House #0283"
+  },
+  {
+    "id": "CH_02_0746_front_right_view",
+    "label": "Carriage House #0746"
+  },
+  {
+    "id": "CH_02_0944_front_right_view",
+    "label": "Carriage House #0944"
+  },
+  {
+    "id": "CH_02_1053_front_right_view",
+    "label": "Carriage House #1053"
+  },
+  {
+    "id": "CH_03_1471_front_right_view",
+    "label": "Carriage House #1471"
+  },
+  {
+    "id": "COL_01_0387_front_right_view",
+    "label": "Colonial #0387"
+  },
+  {
+    "id": "COL_01_0636_front_right_view",
+    "label": "Colonial #0636"
+  },
+  {
+    "id": "COL_03_1444_front_right_view",
+    "label": "Colonial #1444"
+  },
+  {
+    "id": "COL_03_1834_front_right_view",
+    "label": "Colonial #1834"
+  },
+  {
+    "id": "CR_01_0201_front_right_view",
+    "label": "Cruciform #0201"
+  },
+  {
+    "id": "CR_02_1152_front_right_view",
+    "label": "Cruciform #1152"
+  },
+  {
+    "id": "FH_01_0077_front_right_view",
+    "label": "Farmhouse #0077"
+  },
+  {
+    "id": "FH_02_0395_front_right_view",
+    "label": "Farmhouse #0395"
+  },
+  {
+    "id": "FH_02_0504_front_right_view",
+    "label": "Farmhouse #0504"
+  },
+  {
+    "id": "FH_02_0560_front_right_view",
+    "label": "Farmhouse #0560"
+  },
+  {
+    "id": "FH_03_0959_front_right_view",
+    "label": "Farmhouse #0959"
+  },
+  {
+    "id": "FH_04_1201_front_right_view",
+    "label": "Farmhouse #1201"
+  },
+  {
+    "id": "FH_04_1265_front_right_view",
+    "label": "Farmhouse #1265"
+  },
+  {
+    "id": "FH_06_1733_front_right_view",
+    "label": "Farmhouse #1733"
+  },
+  {
+    "id": "RN_01_0061_front_right_view",
+    "label": "Ranch #0061"
+  },
+  {
+    "id": "RN_02_0135_front_right_view",
+    "label": "Ranch #0135"
+  },
+  {
+    "id": "RN_05_0489_front_right_view",
+    "label": "Ranch #0489"
+  },
+  {
+    "id": "SB_01_0011_front_right_view",
+    "label": "Saltbox #0011"
+  },
+  {
+    "id": "SB_01_0084_front_right_view",
+    "label": "Saltbox #0084"
+  },
+  {
+    "id": "SB_01_0158_front_right_view",
+    "label": "Saltbox #0158"
+  },
+  {
+    "id": "SB_02_0249_front_right_view",
+    "label": "Saltbox #0249"
+  },
+  {
+    "id": "SB_02_0320_front_right_view",
+    "label": "Saltbox #0320"
+  },
+  {
+    "id": "SB_03_0405_front_right_view",
+    "label": "Saltbox #0405"
+  },
+  {
+    "id": "SB_04_0523_front_right_view",
+    "label": "Saltbox #0523"
+  },
+  {
+    "id": "SB_05_0719_front_right_view",
+    "label": "Saltbox #0719"
+  },
+  {
+    "id": "SL_02_0917_front_right_view",
+    "label": "Split-Level #0917"
+  },
+  {
+    "id": "SL_03_1373_front_right_view",
+    "label": "Split-Level #1373"
+  },
+  {
+    "id": "TH_04_0258_front_right_view",
+    "label": "Townhouse #0258"
+  },
+  {
+    "id": "TH_04_0268_front_right_view",
+    "label": "Townhouse #0268"
+  },
+  {
+    "id": "TH_05_0358_front_right_view",
+    "label": "Townhouse #0358"
+  },
+  {
+    "id": "ZP_01_0173_front_right_view",
+    "label": "Z-Plan #0173"
+  }
+]
