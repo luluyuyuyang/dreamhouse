@@ -37,6 +37,33 @@
       .hero-three-col .hero-img { display: none; }
     }
 
+    /* ── Mobile fixes ── */
+    @media (max-width: 768px) {
+      /* Hero: single column, hide side images */
+      .hero-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+      .hero-grid > div:first-child,
+      .hero-grid > div:last-child { display: none !important; }
+      .hero-grid > div:nth-child(2) { min-width: unset !important; max-width: 100% !important; }
+
+      /* Abstract left-aligned on small screens is fine, center the container */
+      .abstract-body { padding: 0 0.5rem; }
+
+      /* Buttons wrap */
+      .buttons { flex-wrap: wrap !important; justify-content: center !important; }
+
+      /* Val grid 2 cols */
+      .val-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+      /* Showcase grid 1 col */
+      .showcase-grid { grid-template-columns: 1fr !important; }
+
+      /* Results table scroll */
+      .result-wrap { overflow-x: auto; }
+
+      /* Prevent tooltip popups on mobile */
+      #wechat-tip, #discord-tip { display: none !important; }
+    }
+
     .author-block { display: inline-block; margin-right: 0.25rem; }
     .author-block a {
       color: #3273dc;
@@ -423,7 +450,7 @@
 <!-- ════════════════ HERO ════════════════ -->
 <section class="hero">
   <div class="hero-body" style="padding: 3.5rem 1.5rem 1.5rem;">
-    <div style="max-width:1300px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:5rem;">
+    <div class="hero-grid" style="max-width:1300px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:5rem;">
 
       <!-- Left image: completed house -->
       <div style="text-align:right;">
@@ -471,7 +498,7 @@
             </div>
           </div>
           <div style="position:relative; display:inline-block;">
-            <a class="button is-rounded is-dark" href="./wechat.html" target="_blank"
+            <a class="button is-rounded is-dark" href="#wechat-section"
               onmouseenter="document.getElementById('wechat-tip').style.display='block'"
               onmouseleave="document.getElementById('wechat-tip').style.display='none'">
               <span class="icon"><i class="fab fa-weixin"></i></span>
@@ -1228,6 +1255,42 @@ document.getElementById('showcase-targets').addEventListener('mouseleave', () =>
   journal = {arXiv preprint},
   year    = {2026},
 }</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ WECHAT ════════════════ -->
+<section class="section" id="wechat-section" style="padding: 2.5rem 1.5rem;">
+  <div class="container is-max-desktop" style="text-align:center;">
+    <h2 class="section-heading">Join the Community</h2>
+    <p style="font-family:'Noto Sans',sans-serif; font-size:0.9rem; color:#aaa; margin: 0.6rem 0 2rem;">
+      Share results, ask questions, stay updated.
+    </p>
+    <div style="display:flex; justify-content:center; align-items:flex-start; gap:4rem; flex-wrap:wrap;">
+
+      <!-- Discord -->
+      <div style="text-align:center;">
+        <div style="font-family:'Google Sans',sans-serif; font-size:1rem; font-weight:500; color:#1a1a1a; margin-bottom:1rem;">
+          <i class="fab fa-discord" style="color:#5865f2; margin-right:6px;"></i>Discord
+        </div>
+        <a href="https://discord.gg/f3yebJFx" target="_blank"
+           style="display:inline-block; padding:12px 28px; background:#5865f2; color:#fff; border-radius:24px; font-family:'Google Sans',sans-serif; font-size:0.9rem; font-weight:500; text-decoration:none;">
+          Join Server
+        </a>
+        <p style="font-family:'Noto Sans',sans-serif; font-size:0.78rem; color:#bbb; margin-top:0.7rem;">discord.gg/f3yebJFx</p>
+      </div>
+
+      <!-- WeChat -->
+      <div style="text-align:center;">
+        <div style="font-family:'Google Sans',sans-serif; font-size:1rem; font-weight:500; color:#1a1a1a; margin-bottom:1rem;">
+          <i class="fab fa-weixin" style="color:#07c160; margin-right:6px;"></i>WeChat
+        </div>
+        <img src="./assets/wechat_group_qr.jpeg"
+             alt="WeChat group QR code"
+             style="width:180px; height:180px; object-fit:contain; border-radius:10px; border:1px solid #e0e0e0; box-shadow:0 4px 20px rgba(0,0,0,0.08); display:block;"/>
+        <p style="font-family:'Noto Sans',sans-serif; font-size:0.78rem; color:#bbb; margin-top:0.7rem;">Scan with WeChat</p>
+      </div>
+
     </div>
   </div>
 </section>
