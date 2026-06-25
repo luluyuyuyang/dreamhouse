@@ -471,40 +471,53 @@
           <span class="author-block"><a href="https://www.linkedin.com/in/zeyuan-chen-/" target="_blank" rel="noopener noreferrer">Zeyuan Chen</a></span>
         </div>
         <p class="affil" style="font-size:1.05rem; color:#444; font-weight:500;">Salesforce AI Research</p>
-        <div class="buttons is-centered" style="gap:10px; flex-wrap:nowrap; align-items:center; justify-content:center;">
-          <a class="button is-rounded is-dark" href="https://arxiv.org/abs/2603.24866" target="_blank">
-            <span class="icon"><i class="ai ai-arxiv"></i></span>
-            <span>arXiv</span>
-          </a>
-          <a class="button is-rounded is-dark" href="https://github.com/SalesforceAIResearch/DreamHouse" target="_blank" rel="noopener noreferrer">
-            <span class="icon"><i class="fab fa-github"></i></span>
-            <span>Code</span>
-          </a>
-          <div style="position:relative; display:inline-block;">
-            <a class="button is-rounded is-dark" href="https://discord.gg/f3yebJFx" target="_blank"
-              onmouseenter="document.getElementById('discord-tip').style.display='block'"
-              onmouseleave="document.getElementById('discord-tip').style.display='none'">
-              <span class="icon"><i class="fab fa-discord"></i></span>
-              <span>Discord</span>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:0.65rem;">
+          <div class="buttons is-centered" style="gap:10px; flex-wrap:wrap; align-items:center; justify-content:center; margin-bottom:0;">
+            <a class="button is-rounded is-dark" href="https://arxiv.org/abs/2603.24866" target="_blank">
+              <span class="icon"><i class="ai ai-arxiv"></i></span>
+              <span>arXiv</span>
             </a>
-            <div id="discord-tip" style="display:none; position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); background:#1a1a1a; color:#fff; border-radius:8px; padding:8px 14px; font-family:'Noto Sans',sans-serif; font-size:0.78rem; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:100; line-height:1.5;">
-              Go to Discord
-              <div style="position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); width:10px; height:10px; background:#1a1a1a; clip-path:polygon(0 0,100% 0,50% 100%);"></div>
+            <a class="button is-rounded is-dark" href="https://github.com/SalesforceAIResearch/DreamHouse" target="_blank" rel="noopener noreferrer">
+              <span class="icon"><i class="fab fa-github"></i></span>
+              <span>GitHub Code</span>
+            </a>
+            <a class="button is-rounded" href="./run.html"
+               style="background:#3273dc; color:#fff; border:none; box-shadow:0 6px 18px rgba(50,115,220,0.28);">
+              <span class="icon"><i class="fas fa-terminal"></i></span>
+              <span style="font-weight:600;">Run Benchmark</span>
+            </a>
+            <span class="button is-rounded"
+                  style="background:#f2f2f2; color:#999; border:1px solid #e0e0e0; cursor:not-allowed; opacity:0.9;">
+              <span class="icon"><i class="fas fa-trophy"></i></span>
+              <span>Leaderboard <span style="font-size:0.78em;">Coming Soon</span></span>
+            </span>
+          </div>
+          <div class="buttons is-centered" style="gap:10px; flex-wrap:wrap; align-items:center; justify-content:center; margin-bottom:0;">
+            <div style="position:relative; display:inline-block;">
+              <a class="button is-rounded is-dark" href="https://discord.gg/ZhExR6qnX" target="_blank"
+                onmouseenter="document.getElementById('discord-tip').style.display='block'"
+                onmouseleave="document.getElementById('discord-tip').style.display='none'">
+                <span class="icon"><i class="fab fa-discord"></i></span>
+                <span>Discord</span>
+              </a>
+              <div id="discord-tip" style="display:none; position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); background:#1a1a1a; color:#fff; border-radius:8px; padding:8px 14px; font-family:'Noto Sans',sans-serif; font-size:0.78rem; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:100; line-height:1.5;">
+                Go to Discord
+                <div style="position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); width:10px; height:10px; background:#1a1a1a; clip-path:polygon(0 0,100% 0,50% 100%);"></div>
+              </div>
+            </div>
+            <div style="position:relative; display:inline-block;">
+              <a class="button is-rounded is-dark" href="#wechat-section"
+                onmouseenter="document.getElementById('wechat-tip').style.display='block'"
+                onmouseleave="document.getElementById('wechat-tip').style.display='none'">
+                <span class="icon"><i class="fab fa-weixin"></i></span>
+                <span>WeChat</span>
+              </a>
+              <div id="wechat-tip" style="display:none; position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); background:#1a1a1a; color:#fff; border-radius:8px; padding:8px 14px; font-family:'Noto Sans',sans-serif; font-size:0.78rem; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:100; line-height:1.5;">
+                Click to show QR code
+                <div style="position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); width:10px; height:10px; background:#1a1a1a; clip-path:polygon(0 0,100% 0,50% 100%);"></div>
+              </div>
             </div>
           </div>
-          <div style="position:relative; display:inline-block;">
-            <a class="button is-rounded is-dark" href="#wechat-section"
-              onmouseenter="document.getElementById('wechat-tip').style.display='block'"
-              onmouseleave="document.getElementById('wechat-tip').style.display='none'">
-              <span class="icon"><i class="fab fa-weixin"></i></span>
-              <span>WeChat</span>
-            </a>
-            <div id="wechat-tip" style="display:none; position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); background:#1a1a1a; color:#fff; border-radius:8px; padding:8px 14px; font-family:'Noto Sans',sans-serif; font-size:0.78rem; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,0.2); z-index:100; line-height:1.5;">
-              Click to show QR code
-              <div style="position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); width:10px; height:10px; background:#1a1a1a; clip-path:polygon(0 0,100% 0,50% 100%);"></div>
-            </div>
-          </div>
-          <span style="font-family:'Noto Sans',sans-serif; font-size:0.78rem; color:#bbb;"></span>
         </div>
       </div>
 
@@ -1192,16 +1205,52 @@ document.getElementById('showcase-targets').addEventListener('mouseleave', () =>
             <td style="text-align:center;"><strong>0.043</strong></td>
           </tr>
           <tr style="border-top:2px solid #e8e8e8;">
-            <td style="border-right:1px solid #f0f0f0;">Qwen3.5-397B-A17B</td>
-            <td style="text-align:center; color:#bbb;">—</td>
-            <td style="text-align:center; color:#bbb;">—</td>
-            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="border-right:1px solid #f0f0f0;">Qwen3.5-397B</td>
+            <td style="text-align:center;">0.231</td>
+            <td style="text-align:center;">0.395</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.029</td>
             <td style="text-align:center; color:#bbb;">—</td>
             <td style="text-align:center; color:#bbb;">—</td>
             <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
             <td style="text-align:center;">0.206</td>
             <td style="text-align:center;">0.261</td>
             <td style="text-align:center;">0.016</td>
+          </tr>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">Qwen3.5-397B (no thinking)</td>
+            <td style="text-align:center;">0.084</td>
+            <td style="text-align:center;">0.382</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0;">0.007</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+          </tr>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">LLaVA-OV-72B</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+          </tr>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">InternVL3</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
           </tr>
           <tr>
             <td style="border-right:1px solid #f0f0f0;">Qwen3-VL-30B-A3B</td>
@@ -1227,9 +1276,22 @@ document.getElementById('showcase-targets').addEventListener('mouseleave', () =>
             <td style="text-align:center; color:#bbb;">N/A</td>
             <td style="text-align:center;">0.000</td>
           </tr>
+          <tr>
+            <td style="border-right:1px solid #f0f0f0;">Kimi K2.5</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; border-right:1px solid #f0f0f0; color:#bbb;">—</td>
+            <td style="text-align:center;">0.000</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+            <td style="text-align:center; color:#bbb;">—</td>
+          </tr>
         </tbody>
       </table>
     </div>
+
   </div>
 </section>
 
@@ -1242,13 +1304,11 @@ document.getElementById('showcase-targets').addEventListener('mouseleave', () =>
     <div style="height:1.2rem;"></div>
     <div style="position:relative; max-width:700px; margin:0 auto;">
       <button onclick="copyBibtex(this)" style="position:absolute; top:10px; right:10px; font-family:'Google Sans',sans-serif; font-size:0.75rem; padding:5px 12px; border:1px solid #ccc; border-radius:5px; background:#fff; cursor:pointer; color:#555; transition:all 0.15s; z-index:1;">Copy</button>
-      <pre class="bibtex" id="bibtex-block">@article{dreamhousegpt2026,
-  title   = {DreamHouse: How Far Are Vision-Language Models
-             from Constructing the Real World?},
-  author  = {Yang, Luyu and Dai, Yutong and Yan, An and
-             Prabhu, Viraj and Xu, Ran and Chen, Zeyuan},
-  journal = {arXiv preprint arXiv:2603.24866},
-  year    = {2026},
+      <pre class="bibtex" id="bibtex-block">@inproceedings{yang2026dreamhouse,
+  title     = {DreamHouse: How Far Are Vision-Language Models from Constructing the Real World?},
+  author    = {Yang, Luyu and Dai, Yutong and Yan, An and Prabhu, Viraj and Xu, Ran and Chen, Zeyuan},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2026},
 }</pre>
     </div>
   </div>
@@ -1268,11 +1328,11 @@ document.getElementById('showcase-targets').addEventListener('mouseleave', () =>
         <div style="font-family:'Google Sans',sans-serif; font-size:1rem; font-weight:500; color:#1a1a1a; margin-bottom:1rem;">
           <i class="fab fa-discord" style="color:#5865f2; margin-right:6px;"></i>Discord
         </div>
-        <a href="https://discord.gg/f3yebJFx" target="_blank"
+        <a href="https://discord.gg/ZhExR6qnX" target="_blank"
            style="display:inline-block; padding:12px 28px; background:#5865f2; color:#fff; border-radius:24px; font-family:'Google Sans',sans-serif; font-size:0.9rem; font-weight:500; text-decoration:none;">
           Join Server
         </a>
-        <p style="font-family:'Noto Sans',sans-serif; font-size:0.78rem; color:#bbb; margin-top:0.7rem;">discord.gg/f3yebJFx</p>
+        <p style="font-family:'Noto Sans',sans-serif; font-size:0.78rem; color:#bbb; margin-top:0.7rem;">discord.gg/ZhExR6qnX</p>
       </div>
 
       <!-- WeChat -->

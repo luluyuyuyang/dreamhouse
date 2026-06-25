@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Run DreamHouse</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      color: #363636;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page-title {
+      font-family: 'Castoro', serif;
+      font-size: 2.6rem;
+      line-height: 1.2;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 1rem;
+    }
+    .subtitle-copy {
+      color: #666;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      max-width: 760px;
+      margin: 0 auto 1.5rem;
+    }
+    .section-heading {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 0.9rem;
+    }
+    .step-card {
+      border: 1px solid #ebebeb;
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      background: #fff;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.035);
+    }
+    .step-label {
+      display: inline-block;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #3273dc;
+      background: rgba(50,115,220,0.08);
+      border-radius: 999px;
+      padding: 0.25rem 0.65rem;
+      margin-bottom: 0.75rem;
+    }
+    .copy {
+      color: #555;
+      line-height: 1.7;
+      font-size: 0.96rem;
+    }
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin: 0.9rem 0 0;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    .inline-code {
+      background: #f5f5f5;
+      border-radius: 5px;
+      padding: 0.1rem 0.35rem;
+      font-size: 0.9em;
+    }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.2rem;
+    }
+    .pill {
+      border: 1px solid #e8e8e8;
+      border-radius: 999px;
+      padding: 0.4rem 0.8rem;
+      color: #555;
+      background: #fafafa;
+      font-size: 0.86rem;
+    }
+    .note {
+      border-left: 4px solid #3273dc;
+      background: rgba(50,115,220,0.06);
+      padding: 0.9rem 1rem;
+      border-radius: 8px;
+      color: #4a4a4a;
+      line-height: 1.65;
+      margin-top: 1rem;
+      font-size: 0.94rem;
+    }
+    .toc {
+      border: 1px solid #ebebeb;
+      border-radius: 12px;
+      padding: 1.1rem 1.2rem;
+      background: #fafafa;
+      margin-bottom: 2rem;
+    }
+    .toc-title {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #777;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .toc a {
+      color: #3273dc;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 2.35rem;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid #e8e8e8;
+      border-radius: 9px;
+      background: #fff;
+      font-size: 0.88rem;
+      line-height: 1.25;
+      text-decoration: none;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .toc a:hover {
+      border-color: #3273dc;
+      background: rgba(50,115,220,0.04);
+    }
+    .toc-num {
+      flex: 0 0 auto;
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(50,115,220,0.09);
+      color: #3273dc;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .metric-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin-top: 1rem;
+    }
+    .metric-table th, .metric-table td {
+      border-bottom: 1px solid #eee;
+      padding: 0.7rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    .metric-table th {
+      font-family: 'Google Sans', sans-serif;
+      color: #222;
+      background: #fafafa;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #aaa;
+      padding: 2.5rem 1rem 3rem;
+    }
+    @media (max-width: 768px) {
+      .page-title { font-size: 2rem; }
+      .step-card { padding: 1.15rem; }
+      .toc-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-body" style="padding:3.2rem 1.5rem 2rem;">
+      <div class="container is-max-desktop has-text-centered">
+        <p style="font-family:'Google Sans',sans-serif; color:#999; margin-bottom:0.4rem;">
+          DreamHouse Benchmark
+        </p>
+        <h1 class="page-title">How to Run DreamHouse</h1>
+        <p class="subtitle-copy">
+          Evaluate vision-language agents on timber-frame construction tasks using the
+          DreamHouse CLI. This tutorial follows the same pattern as common agent benchmarks:
+          install, smoke test, run an agent, and inspect results.
+        </p>
+        <div class="buttons is-centered" style="gap:10px; flex-wrap:wrap;">
+          <a class="button is-rounded is-dark" href="./index.html">
+            <span class="icon"><i class="fas fa-home"></i></span>
+            <span>Project</span>
+          </a>
+          <a class="button is-rounded is-dark" href="https://github.com/SalesforceAIResearch/DreamHouse" target="_blank" rel="noopener noreferrer">
+            <span class="icon"><i class="fab fa-github"></i></span>
+            <span>Code</span>
+          </a>
+          <a class="button is-rounded is-light" href="#custom-agent">
+            <span>Custom Agent</span>
+          </a>
+        </div>
+        <div class="pill-row">
+          <span class="pill">Tested with Blender 4.5.4 LTS</span>
+          <span class="pill">Validator matched to Blender Python</span>
+          <span class="pill">1,200 public eval tasks</span>
+          <span class="pill">Local validation server</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1rem;">
+    <div class="container is-max-desktop">
+      <div class="toc">
+        <div class="toc-title">On this page</div>
+        <div class="toc-grid">
+          <a href="#install"><span class="toc-num">1</span><span>Prerequisites</span></a>
+          <a href="#setup"><span class="toc-num">2</span><span>Setup Artifacts</span></a>
+          <a href="#smoke-test"><span class="toc-num">3</span><span>Smoke Test</span></a>
+          <a href="#custom-agent"><span class="toc-num">4</span><span>Run with an Agent</span></a>
+          <a href="#hosted"><span class="toc-num">5</span><span>Hosted API Model</span></a>
+          <a href="#self-hosted"><span class="toc-num">6</span><span>Self-hosted Model</span></a>
+          <a href="#outputs"><span class="toc-num">7</span><span>Outputs</span></a>
+        </div>
+      </div>
+
+      <div id="install" class="step-card">
+        <span class="step-label">1 · Prerequisites</span>
+        <h2 class="section-heading">Install DreamHouse</h2>
+        <p class="copy">
+          Install the DreamHouse CLI from PyPI. This installs the
+          <span class="inline-code">dreamhouse</span> command, but does not download the task pack,
+          reference images, validator artifact, or Blender.
+        </p>
+        <pre><code>pip install dreamhouse
+dreamhouse --help</code></pre>
+        <p class="copy" style="margin-top:0.9rem;">
+          DreamHouse runs the validator locally in Blender. The tested default is
+          <strong>Blender 4.5.4 LTS</strong>, whose bundled Python is <strong>3.11.x</strong>.
+          Other Blender versions may work if their bundled Python matches the provided
+          validator artifact.
+        </p>
+        <p class="copy" style="margin-top:0.9rem;">
+          For local development from a cloned repo, use:
+        </p>
+        <pre><code>git clone https://github.com/SalesforceAIResearch/DreamHouse.git
+cd DreamHouse
+pip install -e .</code></pre>
+      </div>
+
+      <div id="setup" class="step-card">
+        <span class="step-label">2 · Setup Artifacts</span>
+        <h2 class="section-heading">Set Up Artifacts</h2>
+        <p class="copy">
+          Download and verify the benchmark artifacts. The setup command reassembles the split
+          task pack, checks its SHA-256 checksum, and installs the validator artifact locally.
+        </p>
+        <pre><code>dreamhouse setup --download-artifacts</code></pre>
+        <div class="note">
+          Best-practice path: use the tested Blender 4.5.4 LTS runtime. Other Blender
+          versions may work, but the validator artifact must match Blender's bundled Python
+          minor version. Run <span class="inline-code">dreamhouse doctor</span> to check
+          your local environment.
+        </div>
+        <pre><code>dreamhouse doctor</code></pre>
+        <p class="copy" style="margin-top:0.9rem;">
+          If Blender is not installed, you can ask DreamHouse to install the recommended build:
+        </p>
+        <pre><code>dreamhouse setup --download-artifacts --install-blender</code></pre>
+      </div>
+
+      <div id="smoke-test" class="step-card">
+        <span class="step-label">3 · Smoke Test</span>
+        <h2 class="section-heading">Run a Smoke Test</h2>
+        <p class="copy">
+          The smoke test uses a built-in stub agent. It is not a model evaluation; it only verifies
+          that the task pack, image serving, Blender execution, geometry export, local server, and
+          validator all work end-to-end.
+        </p>
+        <pre><code>dreamhouse smoke-test \
+  --task BN_01_0003 \
+  --output-dir ./runs/smoke_BN_01_0003</code></pre>
+        <p class="copy" style="margin-top:0.9rem;">
+          With the stub agent, you should expect validation to run successfully but fail several
+          structural tests, because the stub only creates four sill plates.
+        </p>
+      </div>
+
+      <div id="custom-agent" class="step-card">
+        <span class="step-label">4 · Run with an Agent</span>
+        <h2 class="section-heading">Run with Your Agent</h2>
+        <p class="copy">
+          Real evaluation requires a user-supplied agent. DreamHouse loads agents as Python
+          callables using the standard <span class="inline-code">module:function</span> pattern.
+        </p>
+        <pre><code>dreamhouse run \
+  --task BN_01_0003 \
+  --agent my_agent:generate \
+  --output-dir ./runs/BN_01_0003</code></pre>
+        <p class="copy" style="margin-top:0.9rem;">
+          Your agent function receives the task prompt, local paths to the five reference images,
+          and feedback history from previous attempts. It must return executable Blender Python.
+        </p>
+        <pre><code>def generate(prompt: str, images: list[str], feedback: list[dict]) -> str:
+    # Call your VLM or agent here.
+    # Return Blender Python code that creates objects in COLLECTION_NAME.
+    return blender_python_code</code></pre>
+        <div class="note">
+          See <span class="inline-code">examples/agent_template.py</span> in the repository for a
+          copyable starter file.
+        </div>
+      </div>
+
+      <div id="hosted" class="step-card">
+        <span class="step-label">5 · Hosted API Model</span>
+        <h2 class="section-heading">Run with a Hosted Lab Model</h2>
+        <p class="copy">
+          Hosted VLM APIs usually require a provider key. The repository includes an OpenAI-hosted
+          example agent.
+        </p>
+        <pre><code>export OPENAI_API_KEY=&lt;your-key&gt;
+export OPENAI_MODEL=gpt-4.1
+
+dreamhouse run \
+  --task BN_01_0003 \
+  --agent examples.openai_agent:generate \
+  --output-dir ./runs/openai_BN_01_0003</code></pre>
+      </div>
+
+      <div id="self-hosted" class="step-card">
+        <span class="step-label">6 · Self-hosted Model</span>
+        <h2 class="section-heading">Run with an OpenAI-compatible Endpoint</h2>
+        <p class="copy">
+          Self-hosted models can be exposed through an OpenAI-compatible
+          <span class="inline-code">/v1/chat/completions</span> endpoint, such as vLLM, LiteLLM,
+          Ollama-compatible servers, or an internal model gateway.
+        </p>
+        <pre><code>export OPENAI_BASE_URL=http://127.0.0.1:8001/v1
+export OPENAI_API_KEY=dummy
+export OPENAI_MODEL=my-vision-model
+
+dreamhouse run \
+  --task BN_01_0003 \
+  --agent examples.openai_compatible_agent:generate \
+  --output-dir ./runs/local_BN_01_0003</code></pre>
+        <p class="copy" style="margin-top:0.9rem;">
+          To test this interface without a real model, start the mock endpoint:
+        </p>
+        <pre><code>python examples/mock_openai_server.py --port 8001</code></pre>
+      </div>
+
+      <div id="outputs" class="step-card">
+        <span class="step-label">7 · Outputs</span>
+        <h2 class="section-heading">Understand the Output</h2>
+        <p class="copy">
+          Each run writes a reproducible artifact directory containing the task, downloaded task
+          views, generated code, exported geometry, validation results, and retry history.
+        </p>
+        <table class="metric-table">
+          <thead>
+            <tr><th>File or folder</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>task.json</code></td><td>Task description and constraints served to the agent.</td></tr>
+            <tr><td><code>images/</code></td><td>The five reference views for the selected task.</td></tr>
+            <tr><td><code>attempts/attempt_N/code.py</code></td><td>Blender Python returned by the agent.</td></tr>
+            <tr><td><code>attempts/attempt_N/submission.json</code></td><td>Exported geometry sent to the validator.</td></tr>
+            <tr><td><code>attempts/attempt_N/result.json</code></td><td>Full validation response for that attempt.</td></tr>
+            <tr><td><code>results.json</code></td><td>Latest validation result shortcut.</td></tr>
+            <tr><td><code>summary.json</code></td><td>Task id, session id, final status, and feedback history.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      <a href="./index.html">DreamHouse project page</a> ·
+      <a href="https://github.com/SalesforceAIResearch/DreamHouse" target="_blank" rel="noopener noreferrer">Code</a>
+    </p>
+  </footer>
+</body>
+</html>
